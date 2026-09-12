@@ -75,7 +75,8 @@ Designed from the ground up with **vanilla, zero-dependency modern web standards
 matthew_portfolio/
 ├── assets/
 │   ├── Matthew_Vonroy_Magombo_CV.pdf   # Official downloadable resume / CV
-│   ├── matthew-profile.jpg             # High-resolution headshot
+│   ├── matt-profile.jpeg               # High-resolution headshot
+│   ├── portfolio-preview.png           # OpenGraph & Twitter preview card
 │   └── favicon.svg                     # Vector brand icon
 ├── css/
 │   └── styles.css                      # Modern CSS styling, CSS variables & animations
