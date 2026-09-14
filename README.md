@@ -45,7 +45,7 @@ Designed from the ground up with **vanilla, zero-dependency modern web standards
 - **⚡ Blazing Fast Performance**: Pure semantic HTML5, modern CSS3, and vanilla ES6+ JavaScript with zero framework bloat.
 - **📄 Direct CV Integration**: Integrated [Matthew Vonroy Magombo CV (PDF)](assets/Matthew_Vonroy_Magombo_CV.pdf) with prominent download CTAs across navigation, hero, and contact sections.
 - **💼 Work Experience Timeline**: Spotlights 11 months of enterprise IT experience at the **Central Vehicle Registry (CVR)** and technical mentorship at **Opening Horizons Academy**.
-- **🛠️ Competency-Based Skills Matrix**: Grouped technical competencies (Languages, Cloud & DevOps, Frameworks, Developer Tools) replacing arbitrary percentage meters.
+- **🛠️ Competency-Based Skills Matrix**: Grouped technical competencies (Cybersecurity, Programming & Tools, Networks & Systems) replacing arbitrary percentage meters.
 - **📋 1-Click Interactive Contact**: Interactive email copy-to-clipboard action button with dynamic tooltip visual feedback.
 - **📱 Fully Responsive & Accessible**: Custom accessible mobile navigation drawer, keyboard escape handling, click-outside dismissal, and `@media (prefers-reduced-motion: reduce)` accessibility compliance.
 - **🔍 SEO & Social Ready**: Configured OpenGraph meta tags, Twitter cards, and structured JSON-LD (`schema.org/Person`) metadata.
