@@ -11,7 +11,7 @@
 
 <p align="center">
   <b>BSc (Hons) Computer Systems Engineering (Upper Second Class 2.1)</b><br>
-  <i>Midlands State University · Certified in Kubernetes (LFS250) · OCI 2025 AI Foundations</i>
+  <i>Midlands State University · Google Cybersecurity Certified · Kubernetes (LFS250) · OCI 2025 AI Foundations</i>
 </p>
 
 ---
@@ -49,6 +49,7 @@ Designed from the ground up with **vanilla, zero-dependency modern web standards
 - **📋 1-Click Interactive Contact**: Interactive email copy-to-clipboard action button with dynamic tooltip visual feedback.
 - **📱 Fully Responsive & Accessible**: Custom accessible mobile navigation drawer, keyboard escape handling, click-outside dismissal, and `@media (prefers-reduced-motion: reduce)` accessibility compliance.
 - **🔍 SEO & Social Ready**: Configured OpenGraph meta tags, Twitter cards, and structured JSON-LD (`schema.org/Person`) metadata.
+- **🛡️ Security Engineering Projects**: Featured builds spotlighted in-site, including a Python SIEM-style threat-detection pipeline, an Enterprise SOC detection & triage lab (Splunk + Wazuh mapped to MITRE ATT&CK), and PCAP-based network forensics with custom Snort rules.
 
 ---
 
@@ -66,6 +67,12 @@ Designed from the ground up with **vanilla, zero-dependency modern web standards
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
 ![Oracle Cloud](https://img.shields.io/badge/Oracle_Cloud-F80000?style=flat-square&logo=oracle&logoColor=white)
 ![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white)
+
+### Security & Detection Engineering
+![Splunk](https://img.shields.io/badge/Splunk-000000?style=flat-square&logo=splunk&logoColor=white)
+![Wireshark](https://img.shields.io/badge/Wireshark-1679A7?style=flat-square&logo=wireshark&logoColor=white)
+
+Wazuh EDR · Snort/Suricata IDS · MITRE ATT&CK · NIST SP 800-61 Incident Triage
 
 ---
 
@@ -127,7 +134,7 @@ http://localhost:8080
 
 This portfolio is structured in alignment with industry-standard tech career recommendations and **OctoPrep.ai** guidelines:
 1. **Verifiable Impact**: All work experience entries quantify real systems impact (e.g., enterprise database uptime, high-volume query throughput, user incident triage).
-2. **Clean Information Hierarchy**: Education highlights top academic distinctions (10 Merits & Distinctions from Midlands State University) while omitting unhelpful coursework noise.
+2. **Clean Information Hierarchy**: Education highlights top academic distinctions alongside full selected coursework (10 courses spanning networks, cloud, embedded systems, and databases) from Midlands State University.
 3. **Unified Identity**: Single point of contact across GitHub ([@VonMagombo](https://github.com/VonMagombo)), LinkedIn ([in/matthew-v-magombo](https://www.linkedin.com/in/matthew-v-magombo/)), and direct email.
 
 ---
@@ -137,8 +144,11 @@ This portfolio is structured in alignment with industry-standard tech career rec
 | Credential / Role | Issuing Body / Organization | Key Details |
 | :--- | :--- | :--- |
 | **BSc (Hons) Computer Systems Engineering** | Midlands State University | Upper Second Class (2.1) · 10 Merits & Distinctions |
+| **Google Cybersecurity Professional Certificate** | Google · Coursera | 9-course program — SIEM, IDS, Python automation, incident response |
+| **Cybersecurity Programme Certificate** | ALX Africa | 13-week intensive: defensive strategies, hands-on security operations |
 | **Kubernetes & Cloud Native Essentials (LFS250)** | The Linux Foundation | Verification ID: `LF-4nx7w75zcm` |
 | **Oracle Cloud Infrastructure 2025 AI Foundations** | Oracle University | Associate Level Certification |
+| **GitHub Copilot Certification** | Microsoft · GitHub | AI-assisted development · Valid Dec 2025 – Dec 2027 |
 | **IT Intern (Enterprise Systems)** | Central Vehicle Registry (CVR) | Database administration, LAN infrastructure, system diagnostics |
 | **Computer Science Tutor** | Opening Horizons Academy | Mentorship in Python, C++, SQL, and core algorithms |
 
@@ -146,7 +156,7 @@ This portfolio is structured in alignment with industry-standard tech career rec
 
 ## 📬 Contact & Connect
 
-I am actively open to discussing software engineering, cloud infrastructure, and DevOps opportunities.
+I am actively open to discussing SOC Analyst, Cloud/Systems Engineer, and software engineering opportunities.
 
 - 🌐 **Portfolio**: [vonmagombo.github.io/matthew_portfolio](https://vonmagombo.github.io/matthew_portfolio/)
 - 💼 **LinkedIn**: [linkedin.com/in/matthew-v-magombo](https://www.linkedin.com/in/matthew-v-magombo/)
