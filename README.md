@@ -36,13 +36,14 @@
 
 This repository hosts the source code for my personal portfolio website, engineered to showcase production-grade projects, cloud-native architectures, professional work experience, and verified technical credentials.
 
-Designed from the ground up with **vanilla, zero-dependency modern web standards**, the site achieves near-instant initial load times, complete cross-device responsiveness, accessible typography, and smooth micro-interactions.
+Built with semantic HTML, vanilla JavaScript and no build step. It has two runtime dependencies, both loaded from CDNs: **Tailwind CSS** (Play CDN) for styling, and **GSAP** for the first-visit intro, which is only downloaded when the intro actually plays. The site achieves near-instant initial load times, complete cross-device responsiveness, accessible typography, and smooth micro-interactions.
 
 ---
 
 ## ✨ Key Features
 
 - **⚡ Blazing Fast Performance**: Pure semantic HTML5, modern CSS3, and vanilla ES6+ JavaScript with zero framework bloat.
+- **🔍 First-Visit Intro**: A GSAP magnifier scans a ciphertext copy of the CV, decrypting it under the lens, verifies the CV's real SHA-256, then opens into the hero. It plays once, is skippable (button, `Esc`, scroll or click), is never shown with `prefers-reduced-motion` or on deep links, and fails open if GSAP or storage is unavailable. GSAP is loaded with Subresource Integrity hashes.
 - **📄 Direct CV Integration**: Integrated [Matthew Vonroy Magombo CV (PDF)](assets/Matthew_Vonroy_Magombo_CV.pdf) with prominent download CTAs across navigation, hero, and contact sections.
 - **💼 Work Experience Timeline**: Spotlights 11 months of enterprise IT experience at the **Central Vehicle Registry (CVR)** and technical mentorship at **Opening Horizons Academy**.
 - **🛠️ Competency-Based Skills Matrix**: Grouped technical competencies (Cybersecurity, Programming & Tools, Networks & Systems) replacing arbitrary percentage meters.
@@ -88,6 +89,7 @@ matthew_portfolio/
 ├── css/
 │   └── styles.css                      # Modern CSS styling, CSS variables & animations
 ├── js/
+│   ├── intro.js                        # First-visit GSAP intro (magnifier, decrypt, portal)
 │   └── main.js                         # Dynamic interactivity, mobile drawer & clipboard
 ├── index.html                          # Semantic HTML5 layout and structured data
 └── README.md                           # Repository documentation
@@ -127,6 +129,15 @@ Navigate to:
 ```
 http://localhost:8080
 ```
+
+### Intro animation controls
+- `http://localhost:8080/?intro=force` always plays the intro; `?intro=off` never does.
+- The intro is remembered under the `localStorage` key `mvm_intro_v1`. Bump the suffix to replay it once for everyone after a redesign.
+- The intro shows the CV's SHA-256. **If you replace `assets/Matthew_Vonroy_Magombo_CV.pdf`, update the hash** in `index.html` (`.intro-hash`):
+  ```bash
+  sha256sum assets/Matthew_Vonroy_Magombo_CV.pdf
+  ```
+- Upgrading GSAP means updating the version and the three `sha384-` integrity hashes in the `<head>` gate script together.
 
 ---
 
