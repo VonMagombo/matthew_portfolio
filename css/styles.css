@@ -112,4 +112,289 @@ body {
   .animate-expand {
     animation: none !important;
   }
+  /* Without this the hero text stays at its pre-animation opacity: 0 */
+  .animate-fade-in-up {
+    opacity: 1 !important;
+  }
+  #replayIntro {
+    display: none !important;
+  }
+}
+
+/* ---------- First-visit intro ----------
+   Plain CSS on purpose: Tailwind's Play CDN compiles classes at runtime, which would flash.
+   html.intro-on  shows the overlay and locks scroll.
+   html.intro-hold holds the hero's entrance animations until the lens opens onto them. */
+#intro-root {
+  display: none;
+}
+
+html.intro-on {
+  overflow: hidden;
+}
+
+html.intro-hold #home .animate-fade-in-up,
+html.intro-hold #home .animate-expand {
+  animation-play-state: paused !important;
+}
+
+#home .animate-expand {
+  animation-fill-mode: both;
+}
+
+html.intro-on #intro-root {
+  --lx: -999px;
+  --ly: -999px;
+  --lr: 80px;
+  --s: 1.6;
+  --dx: 0px;
+  --dy: 0px;
+  --hole: 0px;
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: #060d0c;
+  color: #cbd5e1;
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  overflow: hidden;
+}
+
+#intro-root.is-portal {
+  -webkit-mask-image: radial-gradient(circle at var(--lx) var(--ly), transparent var(--hole), #000 calc(var(--hole) + 1px));
+  mask-image: radial-gradient(circle at var(--lx) var(--ly), transparent var(--hole), #000 calc(var(--hole) + 1px));
+}
+
+#intro-skip {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+  min-height: 44px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #5eead4;
+  background: rgba(6, 13, 12, 0.7);
+  border: 1px solid rgba(45, 212, 191, 0.4);
+  cursor: pointer;
+}
+
+#intro-skip:hover {
+  background: rgba(20, 184, 166, 0.12);
+}
+
+#intro-skip:focus-visible {
+  outline: 2px solid #2dd4bf;
+  outline-offset: 3px;
+}
+
+#intro-skip kbd {
+  font: inherit;
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  text-transform: lowercase;
+  padding: 2px 5px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  color: #94a3b8;
+}
+
+.intro-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.intro-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.7;
+}
+
+.intro-stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 16px 24px;
+}
+
+.intro-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  /* 50 monospace columns + padding, sized to fit the narrower of width and height */
+  font-size: min(14px, calc((100vw - 32px) / 34), calc((100vh - 170px) / 31));
+}
+
+.intro-prompt,
+.intro-hash {
+  margin: 0;
+  font-size: max(10px, 0.85em);
+  color: #2dd4bf;
+  white-space: nowrap;
+}
+
+.intro-hash {
+  color: #94a3b8;
+}
+
+.intro-hash .intro-type {
+  width: 0;
+}
+
+.intro-hash b {
+  font-weight: inherit;
+  color: #94a3b8;
+}
+
+.intro-type {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  white-space: nowrap;
+}
+
+.intro-caret {
+  animation: intro-blink 1s step-end infinite;
+}
+
+@keyframes intro-blink {
+  50% { opacity: 0; }
+}
+
+.intro-doc {
+  position: relative;
+  padding: 1.6em 1.8em;
+  background: #08110f;
+  line-height: 1.75;
+}
+
+.intro-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.intro-frame rect {
+  fill: none;
+  stroke: rgba(45, 212, 191, 0.45);
+  stroke-width: 1;
+}
+
+.doc-row {
+  width: 50ch;
+  min-height: 1.75em;
+  white-space: pre;
+}
+
+.doc-cipher .doc-row {
+  color: rgba(148, 163, 184, 0.35);
+}
+
+.doc-cipher .doc-row.is-clear {
+  color: #e2e8f0;
+}
+
+/* The magnifier: an exact copy of the document, clipped to the lens and scaled about its centre,
+   so the point under the lens maps to itself and only the surrounding text is pushed outward. */
+.doc-lens {
+  position: absolute;
+  inset: 0;
+  background: #08110f;
+  clip-path: circle(calc(var(--lr) * 0.92) at calc(var(--lx) - var(--dx)) calc(var(--ly) - var(--dy)));
+  pointer-events: none;
+}
+
+.doc-plain {
+  position: absolute;
+  inset: 0;
+  padding: 1.6em 1.8em;
+  color: #cbd5e1;
+  transform-origin: 0 0;
+  transform:
+    translate(calc((var(--lx) - var(--dx)) * (1 - var(--s))), calc((var(--ly) - var(--dy)) * (1 - var(--s))))
+    scale(var(--s));
+}
+
+.doc-plain .is-name {
+  color: #ffffff;
+}
+
+.doc-plain .is-sub {
+  color: #94a3b8;
+}
+
+.doc-plain .is-head {
+  color: #2dd4bf;
+}
+
+.doc-tags,
+.doc-reticle {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.doc-tag {
+  position: absolute;
+  left: calc(1.8em + 40ch);
+  transform: translateY(-50%);
+  opacity: 0;
+  white-space: nowrap;
+}
+
+.doc-tag span {
+  display: inline-block;
+  font-size: 0.8em;
+  line-height: 1.6;
+  padding: 0 0.5em;
+  color: #5eead4;
+  border: 1px solid rgba(45, 212, 191, 0.5);
+  background: #08110f;
+}
+
+.doc-reticle {
+  inset: auto;
+  opacity: 0;
+}
+
+.doc-reticle i {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border: 0 solid #2dd4bf;
+}
+
+.doc-reticle i:nth-child(1) { top: 0; left: 0; border-top-width: 2px; border-left-width: 2px; }
+.doc-reticle i:nth-child(2) { top: 0; right: 0; border-top-width: 2px; border-right-width: 2px; }
+.doc-reticle i:nth-child(3) { bottom: 0; left: 0; border-bottom-width: 2px; border-left-width: 2px; }
+.doc-reticle i:nth-child(4) { bottom: 0; right: 0; border-bottom-width: 2px; border-right-width: 2px; }
+
+.intro-lens {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: calc(var(--lr) * 2.85);
+  height: calc(var(--lr) * 2.85);
+  transform: translate(calc(var(--lx) - var(--lr) * 1.75), calc(var(--ly) - var(--lr) * 1.1));
+  overflow: visible;
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform;
 }

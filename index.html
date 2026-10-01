@@ -9,6 +9,47 @@
   <meta name="author" content="Matthew Vonroy Magombo" />
   <meta name="theme-color" content="#060d0c" />
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <!-- First-visit intro gate. Runs before first paint and fails open: any doubt means no intro.
+       ?intro=force always plays it, ?intro=off never does. GSAP is only downloaded when the intro plays. -->
+  <script>
+    (function (d, w) {
+      var root = d.documentElement, KEY = 'mvm_intro_v1', mode = null;
+      try { mode = new URLSearchParams(w.location.search).get('intro'); } catch (e) {}
+      if (mode === 'off') return;
+      if (mode !== 'force') {
+        try {
+          if (w.matchMedia('(prefers-reduced-motion: reduce)').matches || w.location.hash) return;
+          if (w.localStorage.getItem(KEY) !== null) return;
+        } catch (e) { return; }
+      }
+      // Mark as seen at start, not end, so a visitor who bounces mid-intro is not shown it again.
+      try { w.localStorage.setItem(KEY, String(Date.now())); } catch (e) {}
+      root.classList.add('intro-on', 'intro-hold');
+
+      // Fail open: if GSAP or intro.js never take over, drop the overlay and let the hero play.
+      var bail = function () {
+        if (w.__mvmIntroRunning || !root.classList.contains('intro-on')) return;
+        root.classList.remove('intro-on', 'intro-hold');
+      };
+      w.__mvmIntroBail = bail;
+      setTimeout(bail, 3000);
+      d.addEventListener('keydown', function (e) { if (e.key === 'Escape') bail(); });
+      d.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('#intro-skip')) bail(); });
+
+      [
+        ['https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js', 'sha384-XmJ9SoHtVOHoQUcKvFAzVXwdkKo1Ie3bhmSoIAkcdsHGaIrVJIkmozyq0FJeb/Ly'],
+        ['https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrambleTextPlugin.min.js', 'sha384-QQ7Drnaxr6AM+cySvZNVNIFsvXLGtDLoS5tlUIt2XvIwnqtBtuD7A2KwqlSAWMi1'],
+        ['https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/DrawSVGPlugin.min.js', 'sha384-pfZbCpJUiv0Y8664JafRbiKcx2uJmjNjVCoPXGwaxvTSbO11M0htzeEeTC6KSaqa'],
+        ['js/intro.js']
+      ].forEach(function (src) {
+        var s = d.createElement('script');
+        s.src = src[0];
+        s.async = false; // download in parallel, execute in order
+        if (src[1]) { s.integrity = src[1]; s.crossOrigin = 'anonymous'; }
+        d.head.appendChild(s);
+      });
+    })(document, window);
+  </script>
   <!-- Open Graph / Social Sharing -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://vonmagombo.github.io/matthew_portfolio/" />
@@ -131,6 +172,47 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="bg-[#f7fffe] dark:bg-[#060d0c] text-slate-900 dark:text-white font-display selection:bg-cyber-500/20 selection:text-cyber-600">
+
+  <!-- FIRST-VISIT INTRO (hidden unless the <head> gate adds html.intro-on; removed from the DOM when done) -->
+  <div id="intro-root">
+    <button id="intro-skip" type="button">Skip intro <kbd>esc</kbd></button>
+    <p id="intro-status" class="intro-sr" aria-live="polite"></p>
+    <div class="intro-visual" aria-hidden="true">
+      <div class="intro-grid grid-bg"></div>
+      <div class="intro-stage">
+        <div class="intro-sheet">
+          <p class="intro-prompt"><span class="intro-type">&gt; inspect ./cv.pdf</span><span class="intro-caret">_</span></p>
+          <div class="intro-doc">
+            <svg class="intro-frame"><rect /></svg>
+            <div class="doc-cipher"></div>
+            <div class="doc-lens"><div class="doc-plain"></div></div>
+            <div class="doc-tags"></div>
+            <div class="doc-reticle"><i></i><i></i><i></i><i></i></div>
+          </div>
+          <!-- Real SHA-256 of assets/Matthew_Vonroy_Magombo_CV.pdf. Update it whenever the PDF changes (see README). -->
+          <p class="intro-hash" data-sha256="263a9801cc4f023d2e35d130167eeb4dab3b2476a075030db2f5490b47cbd496"><span class="intro-type">sha256 263a9801&hellip;cbd496 &middot; integrity <b>ok</b></span></p>
+        </div>
+      </div>
+      <svg class="intro-lens" viewBox="-175 -110 285 285">
+        <defs>
+          <clipPath id="introLensClip"><circle r="92" /></clipPath>
+          <radialGradient id="introLensGlare" cx="-0.35" cy="-0.4" r="1">
+            <stop offset="0" stop-color="#fff" stop-opacity="0.16" />
+            <stop offset="0.45" stop-color="#fff" stop-opacity="0.03" />
+            <stop offset="1" stop-color="#fff" stop-opacity="0" />
+          </radialGradient>
+        </defs>
+        <g transform="rotate(135)">
+          <rect x="99" y="-7" width="22" height="14" fill="#94a3b8" />
+          <rect x="120" y="-13" width="110" height="26" rx="4" fill="#0f172a" stroke="#334155" stroke-width="2" />
+        </g>
+        <circle r="92" fill="url(#introLensGlare)" />
+        <g clip-path="url(#introLensClip)"><rect class="lens-scan" x="-92" y="-60" width="184" height="1.5" fill="#2dd4bf" opacity="0.5" /></g>
+        <circle r="91" fill="none" stroke="#2dd4bf" stroke-opacity="0.6" stroke-width="1.5" />
+        <circle r="96" fill="none" stroke="#e2e8f0" stroke-width="8" />
+      </svg>
+    </div>
+  </div>
 
   <!-- Scan line effect (dark mode) -->
   <div class="fixed inset-0 pointer-events-none z-[200] hidden dark:block overflow-hidden opacity-[0.015]">
@@ -1038,7 +1120,7 @@
   <!-- FOOTER -->
   <footer class="py-8 border-t border-slate-100 dark:border-white/5 bg-white dark:bg-black">
     <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-      <p class="font-mono text-xs text-slate-400">© 2026 Matthew Vonroy Magombo · All rights reserved</p>
+      <p class="font-mono text-xs text-slate-400">© 2026 Matthew Vonroy Magombo · All rights reserved <button id="replayIntro" type="button" class="ml-2 underline underline-offset-2 hover:text-cyber-500 transition-colors" hidden>Replay intro</button></p>
       <p class="font-mono text-xs text-slate-400">BSc Hons Computer Systems Engineering · Google Cybersecurity · ALX Africa · LF Cloud Native</p>
       <div class="flex items-center gap-1.5 font-mono text-xs text-slate-400">
         <span class="w-1.5 h-1.5 rounded-full bg-cyber-500 animate-pulse"></span>
