@@ -1,4 +1,4 @@
-// First-visit intro: a lens decrypts the CV under it, verifies it, then opens into the live hero.
+// Intro, played on every visit: a lens decrypts the CV under it, verifies it, then opens into the live hero.
 // The gate and the fail-safe live inline in <head>; this file only runs the animation.
 (function () {
   const root = document.documentElement;

@@ -9,21 +9,13 @@
   <meta name="author" content="Matthew Vonroy Magombo" />
   <meta name="theme-color" content="#060d0c" />
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
-  <!-- First-visit intro gate. Runs before first paint and fails open: any doubt means no intro.
-       ?intro=force always plays it, ?intro=off never does. GSAP is only downloaded when the intro plays. -->
+  <!-- Intro gate. Runs before first paint on every visit and fails open: if the scripts never load, no intro.
+       ?intro=off skips it. GSAP is only downloaded when the intro plays. -->
   <script>
     (function (d, w) {
-      var root = d.documentElement, KEY = 'mvm_intro_v1', mode = null;
+      var root = d.documentElement, mode = null;
       try { mode = new URLSearchParams(w.location.search).get('intro'); } catch (e) {}
       if (mode === 'off') return;
-      if (mode !== 'force') {
-        try {
-          if (w.matchMedia('(prefers-reduced-motion: reduce)').matches || w.location.hash) return;
-          if (w.localStorage.getItem(KEY) !== null) return;
-        } catch (e) { return; }
-      }
-      // Mark as seen at start, not end, so a visitor who bounces mid-intro is not shown it again.
-      try { w.localStorage.setItem(KEY, String(Date.now())); } catch (e) {}
       root.classList.add('intro-on', 'intro-hold');
 
       // Fail open: if GSAP or intro.js never take over, drop the overlay and let the hero play.
@@ -32,7 +24,8 @@
         root.classList.remove('intro-on', 'intro-hold');
       };
       w.__mvmIntroBail = bail;
-      setTimeout(bail, 3000);
+      // Long enough for GSAP to arrive on a slow mobile connection.
+      setTimeout(bail, 6000);
       d.addEventListener('keydown', function (e) { if (e.key === 'Escape') bail(); });
       d.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('#intro-skip')) bail(); });
 
@@ -173,7 +166,7 @@
 </head>
 <body class="bg-[#f7fffe] dark:bg-[#060d0c] text-slate-900 dark:text-white font-display selection:bg-cyber-500/20 selection:text-cyber-600">
 
-  <!-- FIRST-VISIT INTRO (hidden unless the <head> gate adds html.intro-on; removed from the DOM when done) -->
+  <!-- INTRO (hidden unless the <head> gate adds html.intro-on; removed from the DOM when done) -->
   <div id="intro-root">
     <button id="intro-skip" type="button">Skip intro <kbd>esc</kbd></button>
     <p id="intro-status" class="intro-sr" aria-live="polite"></p>
