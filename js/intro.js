@@ -13,6 +13,8 @@
     return;
   }
   gsap.registerPlugin(ScrambleTextPlugin, DrawSVGPlugin);
+  // Everything has arrived, so a slow DOMContentLoaded (Tailwind's CDN blocks parsing) must not trip the 3s fail-safe.
+  window.__mvmIntroRunning = true;
 
   // Real facts only, no contact details. Rows stay under 40 columns so the tags fit beside them.
   const DOC = [
@@ -43,7 +45,7 @@
   // This file can execute before <body> is parsed, so all DOM work waits for init().
   function init() {
     if (!root.classList.contains('intro-on')) return;
-    window.__mvmIntroRunning = true;
+    if (window.__mvmIntroSeen) window.__mvmIntroSeen();
     const overlay = document.getElementById('intro-root');
     const skipBtn = document.getElementById('intro-skip');
     const status = document.getElementById('intro-status');

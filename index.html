@@ -22,8 +22,11 @@
           if (w.localStorage.getItem(KEY) !== null) return;
         } catch (e) { return; }
       }
-      // Mark as seen at start, not end, so a visitor who bounces mid-intro is not shown it again.
-      try { w.localStorage.setItem(KEY, String(Date.now())); } catch (e) {}
+      // intro.js marks it seen once it actually starts (not at the end, so a visitor who bounces
+      // mid-intro is not shown it again). A visit where it fails open keeps it for next time.
+      w.__mvmIntroSeen = function () {
+        try { w.localStorage.setItem(KEY, String(Date.now())); } catch (e) {}
+      };
       root.classList.add('intro-on', 'intro-hold');
 
       // Fail open: if GSAP or intro.js never take over, drop the overlay and let the hero play.
@@ -44,7 +47,10 @@
       ].forEach(function (src) {
         var s = d.createElement('script');
         s.src = src[0];
-        s.async = false; // download in parallel, execute in order
+        s.async = false; // execute in order
+        // Chrome fetches low-priority scripts one at a time while <head> is still blocked on Tailwind,
+        // which turns these four into a serial waterfall against the 3s fail-safe. High priority lets them download in parallel.
+        s.fetchPriority = 'high';
         if (src[1]) { s.integrity = src[1]; s.crossOrigin = 'anonymous'; }
         d.head.appendChild(s);
       });
