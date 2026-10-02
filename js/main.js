@@ -133,16 +133,11 @@ document.querySelectorAll('[data-copy]').forEach(btn => {
 });
 
 
-// Replay the first-visit intro (the button stays hidden without JS and under reduced motion)
+// Replay the intro (the button stays hidden without JS)
 const replayIntro = document.getElementById('replayIntro');
 if (replayIntro) {
   replayIntro.hidden = false;
   replayIntro.addEventListener('click', () => {
-    try {
-      localStorage.removeItem('mvm_intro_v1');
-      window.location.assign(window.location.pathname);
-    } catch (err) {
-      window.location.assign(window.location.pathname + '?intro=force');
-    }
+    window.location.assign(window.location.pathname);
   });
 }

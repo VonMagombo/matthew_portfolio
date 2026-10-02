@@ -116,12 +116,9 @@ body {
   .animate-fade-in-up {
     opacity: 1 !important;
   }
-  #replayIntro {
-    display: none !important;
-  }
 }
 
-/* ---------- First-visit intro ----------
+/* ---------- Intro ----------
    Plain CSS on purpose: Tailwind's Play CDN compiles classes at runtime, which would flash.
    html.intro-on  shows the overlay and locks scroll.
    html.intro-hold holds the hero's entrance animations until the lens opens onto them. */
