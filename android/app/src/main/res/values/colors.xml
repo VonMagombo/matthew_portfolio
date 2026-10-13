@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- Mirrors the portfolio's dark theme and "cyber" teal scale -->
-    <color name="background">#FF070E0D</color>
-    <color name="cyber_400">#FF2DD4BF</color>
-    <color name="muted">#FF94A3B8</color>
-</resources>
