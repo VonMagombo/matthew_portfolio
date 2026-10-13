@@ -141,3 +141,36 @@ if (replayIntro) {
     window.location.assign(window.location.pathname);
   });
 }
+
+// Countdown — the target carries an explicit +02:00 (CAT) offset, so every
+// visitor counts down to the same instant regardless of their own timezone.
+const countdown = document.getElementById('countdown');
+if (countdown) {
+  const target = Date.parse(countdown.dataset.target);
+  const units = {};
+  countdown.querySelectorAll('[data-unit]').forEach(el => { units[el.dataset.unit] = el; });
+  const srText = countdown.querySelector('[data-countdown-sr]');
+  const pad = n => String(n).padStart(2, '0');
+
+  const tick = () => {
+    // Recompute from the clock each tick so throttled background tabs never drift
+    const remaining = Math.max(0, target - Date.now());
+    const totalSeconds = Math.floor(remaining / 1000);
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor(totalSeconds / 3600) % 24;
+    const minutes = Math.floor(totalSeconds / 60) % 60;
+    const seconds = totalSeconds % 60;
+
+    units.days.textContent = days;
+    units.hours.textContent = pad(hours);
+    units.minutes.textContent = pad(minutes);
+    units.seconds.textContent = pad(seconds);
+    srText.textContent = `${days} days, ${hours} hours and ${minutes} minutes remaining`;
+
+    if (remaining > 0) {
+      // Align to the next whole-second boundary
+      setTimeout(tick, remaining % 1000 || 1000);
+    }
+  };
+  tick();
+}
